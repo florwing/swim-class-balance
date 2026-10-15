@@ -2,285 +2,149 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#087f8c" />
-    <meta
-      name="description"
-      content="泳堂管家：協助游泳教練管理課堂時間、預繳堂數和續費提醒。"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#fbfaf6" />
+    <meta name="description" content="泳堂管家：游泳教練的一站式課堂、學生、付款與營運管理工具。" />
     <title>泳堂管家</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="page-shell">
+    <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="#top" aria-label="泳堂管家首頁">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" role="img">
-              <path d="M9 19c5-6 10-6 15 0s10 6 15 0" />
-              <path d="M9 28c5-6 10-6 15 0s10 6 15 0" />
-              <circle cx="24" cy="10" r="3" />
-            </svg>
-          </span>
-          <span>
-            <strong>泳堂管家</strong>
-            <small>課堂與堂數，一眼掌握</small>
-          </span>
-        </a>
-        <button class="button button-primary top-add" type="button" data-action="open-add">
-          <span aria-hidden="true">＋</span> 新增學生
+        <button class="brand-button" type="button" data-action="go-home" aria-label="返回主頁">
+          <span class="brand-icon" aria-hidden="true">✓</span>
+          <span id="page-label">主頁</span>
         </button>
+        <div class="header-actions">
+          <button class="header-icon" id="theme-toggle" type="button" aria-label="切換深色模式" title="切換顯示模式">☾</button>
+          <button class="logout-button" type="button" data-action="logout"><span aria-hidden="true">↪</span> 登出</button>
+        </div>
       </header>
 
-      <main id="top">
-        <section class="hero" aria-labelledby="welcome-title">
-          <div class="hero-copy">
-            <p class="eyebrow">今日課堂概覽</p>
-            <h1 id="welcome-title">教練，今日安排好晒。</h1>
-            <p id="hero-date" class="hero-date"></p>
-            <div class="privacy-chip">
-              <span aria-hidden="true">🔒</span>
-              資料只儲存在此瀏覽器，不會自動傳送
+      <main>
+        <section id="home-view" class="view home-view">
+          <article class="welcome-card">
+            <div class="profile-avatar" id="profile-avatar" aria-hidden="true">G</div>
+            <div>
+              <span>歡迎回來</span>
+              <h1 id="brand-name">Genius Pro Swimming</h1>
+              <p id="coach-name">教練</p>
             </div>
-          </div>
-          <div class="hero-visual" aria-hidden="true">
-            <span class="sun"></span>
-            <span class="lane lane-one"></span>
-            <span class="lane lane-two"></span>
-            <span class="lane lane-three"></span>
-            <span class="float float-one"></span>
-            <span class="float float-two"></span>
-          </div>
+          </article>
+
+          <details class="setup-guide" open>
+            <summary>
+              <span><span class="guide-icon" aria-hidden="true">⌘</span> 開台流程</span>
+              <span class="chevron" aria-hidden="true">⌃</span>
+            </summary>
+            <p>由零開始的建議次序：先設定，再建資料，最後做錢排課。每一步由主頁方格進入。</p>
+            <ol>
+              <li><b>設定</b><span>入口：主頁 → 設定</span></li>
+              <li><b>課程設定</b><span>入口：主頁 → 課程設定</span></li>
+              <li><b>課室設定</b><span>入口：主頁 → 課室設定</span></li>
+              <li><b>開帳戶</b><span>入口：主頁 → 帳戶管理</span></li>
+              <li><b>新增學生及新增導師</b><span>入口：個人資訊頁面</span></li>
+              <li><b>記錄收款</b><span>入口：付款 → 記錄收款</span></li>
+              <li><b>指派負責導師</b><span>入口：學生檔案 → 負責導師</span></li>
+              <li><b>排課</b><span>入口：主頁 → 時間表</span></li>
+              <li><b>日常運作</b><span>入口：課堂對話框／帳單</span></li>
+            </ol>
+            <button class="text-link" type="button" data-module="help">↗ 查看完整指南</button>
+          </details>
+
+          <section class="feature-grid" id="feature-grid" aria-label="功能選單"></section>
+          <p class="powered-by">Empowered by 泳堂管家</p>
         </section>
 
-        <section class="stats" aria-label="課堂統計">
-          <article class="stat-card stat-blue">
-            <div class="stat-icon" aria-hidden="true">今</div>
+        <section id="module-view" class="view module-view" hidden>
+          <div class="module-heading">
+            <button class="back-button" type="button" data-action="go-home" aria-label="返回主頁">←</button>
             <div>
-              <p>今日課堂</p>
-              <strong id="stat-today">0</strong>
-              <span>堂</span>
+              <span class="module-kicker" id="module-kicker">管理功能</span>
+              <h1 id="module-title">功能</h1>
+              <p id="module-description"></p>
             </div>
-          </article>
-          <article class="stat-card stat-mint">
-            <div class="stat-icon" aria-hidden="true">7</div>
-            <div>
-              <p>未來七日</p>
-              <strong id="stat-week">0</strong>
-              <span>堂</span>
-            </div>
-          </article>
-          <article class="stat-card stat-coral">
-            <div class="stat-icon" aria-hidden="true">$</div>
-            <div>
-              <p>需要續費</p>
-              <strong id="stat-payment">0</strong>
-              <span>位</span>
-            </div>
-          </article>
-          <article class="stat-card stat-sand">
-            <div class="stat-icon" aria-hidden="true">人</div>
-            <div>
-              <p>學生總數</p>
-              <strong id="stat-students">0</strong>
-              <span>位</span>
-            </div>
-          </article>
+            <div id="module-actions" class="module-actions"></div>
+          </div>
+          <div id="module-content" class="module-content"></div>
         </section>
 
-        <section class="dashboard-grid">
-          <article class="panel schedule-panel">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">下一步</p>
-                <h2>即將上堂</h2>
-              </div>
-              <span class="count-badge" id="upcoming-count">0 堂</span>
-            </div>
-            <div id="upcoming-list" class="schedule-list"></div>
-          </article>
-
-          <article class="panel attention-panel">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">需要處理</p>
-                <h2>續費提醒</h2>
-              </div>
-              <span class="alert-dot" aria-hidden="true"></span>
-            </div>
-            <div id="payment-list" class="payment-list"></div>
-          </article>
-        </section>
-
-        <section class="students-section" id="students" aria-labelledby="students-title">
-          <div class="section-heading students-heading">
-            <div>
-              <p class="eyebrow">學生管理</p>
-              <h2 id="students-title">所有學生</h2>
-            </div>
-            <div class="toolbar">
-              <label class="search-box">
-                <span class="sr-only">搜尋學生</span>
-                <span aria-hidden="true">⌕</span>
-                <input id="search-input" type="search" placeholder="搜尋學生姓名" />
-              </label>
-              <button class="button button-primary" type="button" data-action="open-add">
-                <span aria-hidden="true">＋</span> 新增學生
-              </button>
-            </div>
-          </div>
-
-          <div class="filter-row" role="group" aria-label="篩選學生">
-            <button class="filter-button is-active" type="button" data-filter="all">全部</button>
-            <button class="filter-button" type="button" data-filter="payment">需要續費</button>
-            <button class="filter-button" type="button" data-filter="today">今日上堂</button>
-          </div>
-
-          <div id="student-grid" class="student-grid"></div>
-          <div id="empty-state" class="empty-state" hidden>
-            <div class="empty-illustration" aria-hidden="true">〰</div>
-            <h3>未有學生資料</h3>
-            <p>新增第一位學生，系統便會開始計算上課時間及剩餘堂數。</p>
-            <div class="empty-actions">
-              <button class="button button-primary" type="button" data-action="open-add">新增學生</button>
-              <button class="button button-ghost" type="button" id="load-demo">載入示範資料</button>
-            </div>
+        <section id="logged-out-view" class="logged-out-view" hidden>
+          <div class="login-card">
+            <span class="login-logo" aria-hidden="true">✓</span>
+            <p>泳堂管家</p>
+            <h1>管理課堂，由今日開始。</h1>
+            <span>這是本機模式；重新進入不需要密碼。</span>
+            <button class="button button-primary" type="button" data-action="login">進入管理台</button>
           </div>
         </section>
-
-        <aside class="data-note" aria-label="資料私隱提示">
-          <span class="data-note-icon" aria-hidden="true">i</span>
-          <div>
-            <strong>保障學生私隱</strong>
-            <p>只輸入管理課堂所需的最少資料，請勿加入身份證號碼、健康紀錄或其他敏感資料。</p>
-          </div>
-        </aside>
       </main>
 
-      <footer>
-        <span>泳堂管家 · Version 1</span>
-        <span>本機儲存 · 教練確認後才發送訊息</span>
-      </footer>
+      <nav class="bottom-nav" aria-label="主要導覽">
+        <button type="button" data-module="people"><span aria-hidden="true">♟</span><b>個人資訊</b></button>
+        <button type="button" data-module="schedule"><span aria-hidden="true">▦</span><b>時間表</b></button>
+        <button type="button" data-module="payments"><span aria-hidden="true">▰</span><b>付款</b></button>
+        <button type="button" data-module="manual"><span aria-hidden="true">▤</span><b>數位手冊</b></button>
+      </nav>
     </div>
 
-    <dialog id="student-dialog" class="modal">
-      <form id="student-form" method="dialog">
+    <dialog id="form-dialog" class="modal">
+      <form id="dynamic-form" method="dialog">
         <div class="modal-header">
           <div>
-            <p class="eyebrow">學生資料</p>
-            <h2 id="student-dialog-title">新增學生</h2>
+            <span class="module-kicker" id="form-kicker">新增資料</span>
+            <h2 id="form-title">新增</h2>
           </div>
-          <button class="icon-button" type="button" data-close="student-dialog" aria-label="關閉">×</button>
+          <button class="icon-button" type="button" data-close="form-dialog" aria-label="關閉">×</button>
         </div>
-        <input id="student-id" type="hidden" />
-        <div class="form-grid">
-          <label class="field field-wide">
-            <span>學生姓名 <b>*</b></span>
-            <input id="student-name" required maxlength="40" autocomplete="off" placeholder="例如：陳同學" />
-          </label>
-          <label class="field">
-            <span>每週上課日 <b>*</b></span>
-            <select id="student-weekday" required>
-              <option value="1">星期一</option>
-              <option value="2">星期二</option>
-              <option value="3">星期三</option>
-              <option value="4">星期四</option>
-              <option value="5">星期五</option>
-              <option value="6">星期六</option>
-              <option value="0">星期日</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>上課時間 <b>*</b></span>
-            <input id="student-time" type="time" required value="18:00" />
-          </label>
-          <label class="field">
-            <span>預繳堂數 <b>*</b></span>
-            <input id="student-prepaid" type="number" min="1" max="200" step="1" required value="8" />
-          </label>
-          <label class="field">
-            <span>現時剩餘堂數 <b>*</b></span>
-            <input id="student-remaining" type="number" min="0" max="200" step="1" required value="8" />
-          </label>
-          <label class="field field-wide">
-            <span>下一堂日期 <b>*</b></span>
-            <input id="student-next-date" type="date" required />
-            <small>可因應假期或首次上堂日調整。</small>
-          </label>
-        </div>
-        <p class="form-error" id="student-form-error" role="alert"></p>
+        <div id="form-fields" class="form-grid"></div>
+        <p id="form-error" class="form-error" role="alert"></p>
         <div class="modal-actions">
-          <button class="button button-ghost" type="button" data-close="student-dialog">取消</button>
-          <button class="button button-primary" type="submit">儲存學生</button>
+          <button class="button button-secondary" type="button" data-close="form-dialog">取消</button>
+          <button class="button button-primary" id="form-submit" type="submit">儲存</button>
         </div>
       </form>
     </dialog>
 
-    <dialog id="reschedule-dialog" class="modal modal-small">
-      <form id="reschedule-form" method="dialog">
-        <div class="modal-header">
-          <div>
-            <p class="eyebrow">更新安排</p>
-            <h2>更改下一堂</h2>
-          </div>
-          <button class="icon-button" type="button" data-close="reschedule-dialog" aria-label="關閉">×</button>
-        </div>
-        <input id="reschedule-id" type="hidden" />
-        <p id="reschedule-student" class="modal-intro"></p>
-        <div class="form-grid">
-          <label class="field">
-            <span>新日期</span>
-            <input id="reschedule-date" type="date" required />
-          </label>
-          <label class="field">
-            <span>新時間</span>
-            <input id="reschedule-time" type="time" required />
-          </label>
-        </div>
-        <div class="modal-actions">
-          <button class="button button-ghost" type="button" data-close="reschedule-dialog">取消</button>
-          <button class="button button-primary" type="submit">確認改期</button>
-        </div>
-      </form>
-    </dialog>
-
-    <dialog id="message-dialog" class="modal modal-message">
+    <dialog id="message-dialog" class="modal modal-small">
       <div class="modal-header">
         <div>
-          <p class="eyebrow">教練確認後發送</p>
+          <span class="module-kicker">教練確認後發送</span>
           <h2 id="message-title">提醒訊息</h2>
         </div>
         <button class="icon-button" type="button" data-close="message-dialog" aria-label="關閉">×</button>
       </div>
-      <div class="message-tabs" role="tablist" aria-label="訊息類型">
-        <button id="lesson-tab" class="message-tab is-active" type="button" data-message-type="lesson">上堂提醒</button>
-        <button id="payment-tab" class="message-tab" type="button" data-message-type="payment">續費提醒</button>
+      <div class="segmented message-tabs" role="tablist">
+        <button class="is-active" type="button" data-message-type="lesson">上堂提醒</button>
+        <button type="button" data-message-type="payment">續費提醒</button>
       </div>
-      <label class="field">
+      <label class="field field-wide">
         <span>訊息內容</span>
         <textarea id="message-text" rows="7"></textarea>
       </label>
-      <p class="message-note">工具不會自動傳送。請先檢查日期、時間及堂數，再貼到你慣用的通訊程式。</p>
+      <p class="helper-text">工具不會自動傳送。請檢查日期、時間及堂數，再貼到你慣用的通訊程式。</p>
       <div class="modal-actions">
-        <button class="button button-ghost" type="button" data-close="message-dialog">關閉</button>
+        <button class="button button-secondary" type="button" data-close="message-dialog">關閉</button>
         <button class="button button-primary" id="copy-message" type="button">複製訊息</button>
       </div>
     </dialog>
 
-    <dialog id="history-dialog" class="modal modal-small">
-      <div class="modal-header">
+    <dialog id="receipt-dialog" class="modal modal-small">
+      <div class="modal-header no-print">
         <div>
-          <p class="eyebrow">最近課堂操作</p>
-          <h2 id="history-title">課堂紀錄</h2>
+          <span class="module-kicker">付款紀錄</span>
+          <h2>收據</h2>
         </div>
-        <button class="icon-button" type="button" data-close="history-dialog" aria-label="關閉">×</button>
+        <button class="icon-button" type="button" data-close="receipt-dialog" aria-label="關閉">×</button>
       </div>
-      <div id="history-list" class="history-list"></div>
-      <div class="modal-actions">
-        <button class="button button-primary" type="button" data-close="history-dialog">完成</button>
+      <div id="receipt-content" class="receipt-paper"></div>
+      <div class="modal-actions no-print">
+        <button class="button button-secondary" type="button" data-close="receipt-dialog">關閉</button>
+        <button class="button button-primary" type="button" data-action="print-receipt">列印／另存 PDF</button>
       </div>
     </dialog>
 
+    <input id="import-data" type="file" accept="application/json" hidden />
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="./app.js" defer></script>
   </body>
