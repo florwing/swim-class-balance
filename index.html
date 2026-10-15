@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#087f8c" />
+    <meta
+      name="description"
+      content="泳堂管家：協助游泳教練管理課堂時間、預繳堂數和續費提醒。"
+    />
+    <title>泳堂管家</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="泳堂管家首頁">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" role="img">
+              <path d="M9 19c5-6 10-6 15 0s10 6 15 0" />
+              <path d="M9 28c5-6 10-6 15 0s10 6 15 0" />
+              <circle cx="24" cy="10" r="3" />
+            </svg>
+          </span>
+          <span>
+            <strong>泳堂管家</strong>
+            <small>課堂與堂數，一眼掌握</small>
+          </span>
+        </a>
+        <button class="button button-primary top-add" type="button" data-action="open-add">
+          <span aria-hidden="true">＋</span> 新增學生
+        </button>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="welcome-title">
+          <div class="hero-copy">
+            <p class="eyebrow">今日課堂概覽</p>
+            <h1 id="welcome-title">教練，今日安排好晒。</h1>
+            <p id="hero-date" class="hero-date"></p>
+            <div class="privacy-chip">
+              <span aria-hidden="true">🔒</span>
+              資料只儲存在此瀏覽器，不會自動傳送
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <span class="sun"></span>
+            <span class="lane lane-one"></span>
+            <span class="lane lane-two"></span>
+            <span class="lane lane-three"></span>
+            <span class="float float-one"></span>
+            <span class="float float-two"></span>
+          </div>
+        </section>
+
+        <section class="stats" aria-label="課堂統計">
+          <article class="stat-card stat-blue">
+            <div class="stat-icon" aria-hidden="true">今</div>
+            <div>
+              <p>今日課堂</p>
+              <strong id="stat-today">0</strong>
+              <span>堂</span>
+            </div>
+          </article>
+          <article class="stat-card stat-mint">
+            <div class="stat-icon" aria-hidden="true">7</div>
+            <div>
+              <p>未來七日</p>
+              <strong id="stat-week">0</strong>
+              <span>堂</span>
+            </div>
+          </article>
+          <article class="stat-card stat-coral">
+            <div class="stat-icon" aria-hidden="true">$</div>
+            <div>
+              <p>需要續費</p>
+              <strong id="stat-payment">0</strong>
+              <span>位</span>
+            </div>
+          </article>
+          <article class="stat-card stat-sand">
+            <div class="stat-icon" aria-hidden="true">人</div>
+            <div>
+              <p>學生總數</p>
+              <strong id="stat-students">0</strong>
+              <span>位</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel schedule-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">下一步</p>
+                <h2>即將上堂</h2>
+              </div>
+              <span class="count-badge" id="upcoming-count">0 堂</span>
+            </div>
+            <div id="upcoming-list" class="schedule-list"></div>
+          </article>
+
+          <article class="panel attention-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">需要處理</p>
+                <h2>續費提醒</h2>
+              </div>
+              <span class="alert-dot" aria-hidden="true"></span>
+            </div>
+            <div id="payment-list" class="payment-list"></div>
+          </article>
+        </section>
+
+        <section class="students-section" id="students" aria-labelledby="students-title">
+          <div class="section-heading students-heading">
+            <div>
+              <p class="eyebrow">學生管理</p>
+              <h2 id="students-title">所有學生</h2>
+            </div>
+            <div class="toolbar">
+              <label class="search-box">
+                <span class="sr-only">搜尋學生</span>
+                <span aria-hidden="true">⌕</span>
+                <input id="search-input" type="search" placeholder="搜尋學生姓名" />
+              </label>
+              <button class="button button-primary" type="button" data-action="open-add">
+                <span aria-hidden="true">＋</span> 新增學生
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-row" role="group" aria-label="篩選學生">
+            <button class="filter-button is-active" type="button" data-filter="all">全部</button>
+            <button class="filter-button" type="button" data-filter="payment">需要續費</button>
+            <button class="filter-button" type="button" data-filter="today">今日上堂</button>
+          </div>
+
+          <div id="student-grid" class="student-grid"></div>
+          <div id="empty-state" class="empty-state" hidden>
+            <div class="empty-illustration" aria-hidden="true">〰</div>
+            <h3>未有學生資料</h3>
+            <p>新增第一位學生，系統便會開始計算上課時間及剩餘堂數。</p>
+            <div class="empty-actions">
+              <button class="button button-primary" type="button" data-action="open-add">新增學生</button>
+              <button class="button button-ghost" type="button" id="load-demo">載入示範資料</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="data-note" aria-label="資料私隱提示">
+          <span class="data-note-icon" aria-hidden="true">i</span>
+          <div>
+            <strong>保障學生私隱</strong>
+            <p>只輸入管理課堂所需的最少資料，請勿加入身份證號碼、健康紀錄或其他敏感資料。</p>
+          </div>
+        </aside>
+      </main>
+
+      <footer>
+        <span>泳堂管家 · Version 1</span>
+        <span>本機儲存 · 教練確認後才發送訊息</span>
+      </footer>
+    </div>
+
+    <dialog id="student-dialog" class="modal">
+      <form id="student-form" method="dialog">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">學生資料</p>
+            <h2 id="student-dialog-title">新增學生</h2>
+          </div>
+          <button class="icon-button" type="button" data-close="student-dialog" aria-label="關閉">×</button>
+        </div>
+        <input id="student-id" type="hidden" />
+        <div class="form-grid">
+          <label class="field field-wide">
+            <span>學生姓名 <b>*</b></span>
+            <input id="student-name" required maxlength="40" autocomplete="off" placeholder="例如：陳同學" />
+          </label>
+          <label class="field">
+            <span>每週上課日 <b>*</b></span>
+            <select id="student-weekday" required>
+              <option value="1">星期一</option>
+              <option value="2">星期二</option>
+              <option value="3">星期三</option>
+              <option value="4">星期四</option>
+              <option value="5">星期五</option>
+              <option value="6">星期六</option>
+              <option value="0">星期日</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>上課時間 <b>*</b></span>
+            <input id="student-time" type="time" required value="18:00" />
+          </label>
+          <label class="field">
+            <span>預繳堂數 <b>*</b></span>
+            <input id="student-prepaid" type="number" min="1" max="200" step="1" required value="8" />
+          </label>
+          <label class="field">
+            <span>現時剩餘堂數 <b>*</b></span>
+            <input id="student-remaining" type="number" min="0" max="200" step="1" required value="8" />
+          </label>
+          <label class="field field-wide">
+            <span>下一堂日期 <b>*</b></span>
+            <input id="student-next-date" type="date" required />
+            <small>可因應假期或首次上堂日調整。</small>
+          </label>
+        </div>
+        <p class="form-error" id="student-form-error" role="alert"></p>
+        <div class="modal-actions">
+          <button class="button button-ghost" type="button" data-close="student-dialog">取消</button>
+          <button class="button button-primary" type="submit">儲存學生</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="reschedule-dialog" class="modal modal-small">
+      <form id="reschedule-form" method="dialog">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">更新安排</p>
+            <h2>更改下一堂</h2>
+          </div>
+          <button class="icon-button" type="button" data-close="reschedule-dialog" aria-label="關閉">×</button>
+        </div>
+        <input id="reschedule-id" type="hidden" />
+        <p id="reschedule-student" class="modal-intro"></p>
+        <div class="form-grid">
+          <label class="field">
+            <span>新日期</span>
+            <input id="reschedule-date" type="date" required />
+          </label>
+          <label class="field">
+            <span>新時間</span>
+            <input id="reschedule-time" type="time" required />
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="button button-ghost" type="button" data-close="reschedule-dialog">取消</button>
+          <button class="button button-primary" type="submit">確認改期</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="message-dialog" class="modal modal-message">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">教練確認後發送</p>
+          <h2 id="message-title">提醒訊息</h2>
+        </div>
+        <button class="icon-button" type="button" data-close="message-dialog" aria-label="關閉">×</button>
+      </div>
+      <div class="message-tabs" role="tablist" aria-label="訊息類型">
+        <button id="lesson-tab" class="message-tab is-active" type="button" data-message-type="lesson">上堂提醒</button>
+        <button id="payment-tab" class="message-tab" type="button" data-message-type="payment">續費提醒</button>
+      </div>
+      <label class="field">
+        <span>訊息內容</span>
+        <textarea id="message-text" rows="7"></textarea>
+      </label>
+      <p class="message-note">工具不會自動傳送。請先檢查日期、時間及堂數，再貼到你慣用的通訊程式。</p>
+      <div class="modal-actions">
+        <button class="button button-ghost" type="button" data-close="message-dialog">關閉</button>
+        <button class="button button-primary" id="copy-message" type="button">複製訊息</button>
+      </div>
+    </dialog>
+
+    <dialog id="history-dialog" class="modal modal-small">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">最近課堂操作</p>
+          <h2 id="history-title">課堂紀錄</h2>
+        </div>
+        <button class="icon-button" type="button" data-close="history-dialog" aria-label="關閉">×</button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+      <div class="modal-actions">
+        <button class="button button-primary" type="button" data-close="history-dialog">完成</button>
+      </div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
+
